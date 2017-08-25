@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# 
+
 
 import sys
 import cPickle
@@ -63,37 +62,37 @@ def gen_bigram_matrix(CORPUS, compression_algo):
 	# save_bigram(H, words, compression=compression_algo)
 	save_bigram_all(H, words)
 
-def save_bigram(H, words, compression=None):
-	# Compression options: gzip, bzip2, lzma
+# def save_bigram(H, words, compression=None):
+# 	# Compression options: gzip, bzip2, lzma
 
-	mode = "wb" if compression is None else "w"
+# 	mode = "wb" if compression is None else "w"
 
-	if compression == GZIP_COMPRESSION:
-		import gzip
-		matrix_file = gzip.GzipFile(MTX_OUTFILE+'.'+compression, mode)
-		vocab_file = gzip.GzipFile(VOCAB_OUTFILE+'.'+compression, mode)
+# 	if compression == GZIP_COMPRESSION:
+# 		import gzip
+# 		matrix_file = gzip.GzipFile(MTX_OUTFILE+'.'+compression, mode)
+# 		vocab_file = gzip.GzipFile(VOCAB_OUTFILE+'.'+compression, mode)
 	
-	elif compression == BZ2_COMPRESSION:
-		import bz2
-		matrix_file = bz2.BZ2File(MTX_OUTFILE+'.'+compression, mode)
-		vocab_file = bz2.BZ2File(VOCAB_OUTFILE+'.'+compression, mode)
+# 	elif compression == BZ2_COMPRESSION:
+# 		import bz2
+# 		matrix_file = bz2.BZ2File(MTX_OUTFILE+'.'+compression, mode)
+# 		vocab_file = bz2.BZ2File(VOCAB_OUTFILE+'.'+compression, mode)
 
-	elif compression == LZMA_COMPRESSION:
-		import lzma
-		matrix_file = lzma.open(MTX_OUTFILE+'.'+compression, mode)
-		vocab_file = lzma.open(VOCAB_OUTFILE+'.'+compression, mode)
+# 	elif compression == LZMA_COMPRESSION:
+# 		import lzma
+# 		matrix_file = lzma.open(MTX_OUTFILE+'.'+compression, mode)
+# 		vocab_file = lzma.open(VOCAB_OUTFILE+'.'+compression, mode)
 
-	else:
-		matrix_file = open(MTX_OUTFILE, mode)
-		vocab_file = open(VOCAB_OUTFILE, mode)
+# 	else:
+# 		matrix_file = open(MTX_OUTFILE, mode)
+# 		vocab_file = open(VOCAB_OUTFILE, mode)
 
-	cPickle.dump(H, matrix_file)
-	print "Sparse matrix bigram saved to %s.%s" % (MTX_OUTFILE, compression)
-	cPickle.dump(words, vocab_file)
-	print "Vocab saved to %s.%s" % (VOCAB_OUTFILE, compression)
+# 	cPickle.dump(H, matrix_file)
+# 	print "Sparse matrix bigram saved to %s.%s" % (MTX_OUTFILE, compression)
+# 	cPickle.dump(words, vocab_file)
+# 	print "Vocab saved to %s.%s" % (VOCAB_OUTFILE, compression)
 
-	matrix_file.close()
-	vocab_file.close()
+# 	matrix_file.close()
+# 	vocab_file.close()
 
 
 def load_bigram(compression):
@@ -136,31 +135,6 @@ def load_bigram(compression):
 
 
 
-def get_bestn(word, n, compression=None):
-	H, id_to_word = load_bigram(compression)
-	word_to_idx = dict(zip(id_to_word, range(len(id_to_word))))
-	r = []
-	row = word_to_idx[word]
-	print row
-	dist = H.getrow(idx).todense()[0]
-	# print H.getrow(idx)
-	_, cols = H.getrow(idx).nonzero()
-	cols = list(cols)
-	print cols
-	# print H.getrow(idx).todense()
-	# print dist
-	# print dist[0]
-
-	while len(r) < min(n, len(cols)):
-		top_idx = np.argmax(dist)
-		print "top_idx:", top_idx
-		print "len(dist):", len(dist)
-		r.append(id_to_word[top_idx])
-		# dist[top_idx] *= -1
-		dist[top_idx] = 0
-
-	return r
-
 
 def main():
 	global CORPUS
@@ -198,20 +172,20 @@ def save_bigram_all(H, words):
 	vocab_file = lzma.open(VOCAB_OUTFILE+'.xz', mode)
 	cPickle.dump(H, matrix_file)
 	cPickle.dump(words, vocab_file)
+	matrix_file.close()
+	vocab_file.close()
 
 	# print "Sparse matrix bigram saved to %s.%s" % (MTX_OUTFILE, compression)
 	# print "Vocab saved to %s.%s" % (VOCAB_OUTFILE, compression)
 
-	matrix_file.close()
-	vocab_file.close()
 
 	matrix_file = open(MTX_OUTFILE, "wb")
 	vocab_file = open(VOCAB_OUTFILE, "wb")
 	cPickle.dump(H, matrix_file)
 	cPickle.dump(words, vocab_file)
-
 	matrix_file.close()
 	vocab_file.close()
+
 
 
 if __name__ == '__main__':
