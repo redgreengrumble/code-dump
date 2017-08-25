@@ -35,7 +35,7 @@ def gen_bigram_matrix(CORPUS, compression_algo):
 			chkpt += 1
 			if chkpt - last_chkpt == 1000:
 				last_chkpt = chkpt
-				stdout.write("\r%d/%s lines processed" % (chkpt, numlines))
+				stdout.write("\r%d/%s lines counted" % (chkpt, numlines))
 				stdout.flush()
 
 	stdout.write("\n")
@@ -60,7 +60,8 @@ def gen_bigram_matrix(CORPUS, compression_algo):
 				stdout.write("\r%d/%s lines processed" % (c, numlines))
 				stdout.flush()
 	stdout.write("\n")
-	save_bigram(H, words, compression=compression_algo)
+	# save_bigram(H, words, compression=compression_algo)
+	save_bigram(H, words)
 
 def save_bigram(H, words, compression=None):
 	# Compression options: gzip, bzip2, lzma
@@ -169,6 +170,36 @@ def main():
 
 	# print str(get_bestn("<SOQ>", 5))
 
+
+
+def save_bigram_all(H, words):
+	# Compression options: gzip, bzip2, lzma
+
+	mode = "w"
+
+	import gzip
+	matrix_file = gzip.GzipFile(MTX_OUTFILE+'.pgz', mode)
+	vocab_file = gzip.GzipFile(VOCAB_OUTFILE+'.pgz', mode)
+	cPickle.dump(H, matrix_file)
+	cPickle.dump(words, vocab_file)
+	
+	import bz2
+	matrix_file = bz2.BZ2File(MTX_OUTFILE+'.bz2', mode)
+	vocab_file = bz2.BZ2File(VOCAB_OUTFILE+'.bz2', mode)
+	cPickle.dump(H, matrix_file)
+	cPickle.dump(words, vocab_file)
+
+	import lzma
+	matrix_file = lzma.open(MTX_OUTFILE+'.xz', mode)
+	vocab_file = lzma.open(VOCAB_OUTFILE+'.xz', mode)
+	cPickle.dump(H, matrix_file)
+	cPickle.dump(words, vocab_file)
+
+	# print "Sparse matrix bigram saved to %s.%s" % (MTX_OUTFILE, compression)
+	# print "Vocab saved to %s.%s" % (VOCAB_OUTFILE, compression)
+
+	matrix_file.close()
+	vocab_file.close()
 
 
 if __name__ == '__main__':
