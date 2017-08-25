@@ -61,7 +61,7 @@ def gen_bigram_matrix(CORPUS, compression_algo):
 				stdout.flush()
 	stdout.write("\n")
 	# save_bigram(H, words, compression=compression_algo)
-	save_bigram(H, words)
+	save_bigram_all(H, words)
 
 def save_bigram(H, words, compression=None):
 	# Compression options: gzip, bzip2, lzma
@@ -182,12 +182,16 @@ def save_bigram_all(H, words):
 	vocab_file = gzip.GzipFile(VOCAB_OUTFILE+'.pgz', mode)
 	cPickle.dump(H, matrix_file)
 	cPickle.dump(words, vocab_file)
+	matrix_file.close()
+	vocab_file.close()
 	
 	import bz2
 	matrix_file = bz2.BZ2File(MTX_OUTFILE+'.bz2', mode)
 	vocab_file = bz2.BZ2File(VOCAB_OUTFILE+'.bz2', mode)
 	cPickle.dump(H, matrix_file)
 	cPickle.dump(words, vocab_file)
+	matrix_file.close()
+	vocab_file.close()
 
 	import lzma
 	matrix_file = lzma.open(MTX_OUTFILE+'.xz', mode)
