@@ -167,13 +167,13 @@ def save_bigram_all(H, words):
 #	matrix_file.close()
 #	vocab_file.close()
 
-	import lzma
-	matrix_file = lzma.open(MTX_OUTFILE+'.xz', mode)
-	vocab_file = lzma.open(VOCAB_OUTFILE+'.xz', mode)
-	cPickle.dump(H, matrix_file)
-	cPickle.dump(words, vocab_file)
-	matrix_file.close()
-	vocab_file.close()
+#	import pylzma
+#	matrix_file = pylzma.open(MTX_OUTFILE+'.xz', mode)
+#	vocab_file = pylzma.open(VOCAB_OUTFILE+'.xz', mode)
+#	cPickle.dump(H, matrix_file)
+#	cPickle.dump(words, vocab_file)
+#	matrix_file.close()
+#	vocab_file.close()
 
 	# print "Sparse matrix bigram saved to %s.%s" % (MTX_OUTFILE, compression)
 	# print "Vocab saved to %s.%s" % (VOCAB_OUTFILE, compression)
