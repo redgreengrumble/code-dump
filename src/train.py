@@ -17,7 +17,8 @@ parser.add_argument("-e", "--num_epochs", type=int)
 parser.add_argument("-d", "--data_dir")
 args = parser.parse_args()
 
-DATA_DIR = args.data_dir
+# DATA_DIR = args.data_dir
+DATA_DIR = args.data_dir if args.data_dir[-1]!="/" else args.data_dir[:-1] 
 CONFIG_PATH = os.path.join(DATA_DIR, 'config.pkl')
 
 XTENSOR_PATH = os.path.join(DATA_DIR, 'xtensor.npy')
