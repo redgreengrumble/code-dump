@@ -52,7 +52,7 @@ def load_and_train():
 	# train the model
 	model.fit(x, y, batch_size=1024, epochs=args.num_epochs, verbose=1)
 
-	params = dict(map(lambda x: tuple(x.split(".")[:2]), args.data_dir.split("/")[-1].split("_")))
+	params = dict(map(lambda x: tuple(x.split(".")[:2]), DATA_DIR.split("/")[-1].split("_")))
 
 	stamp = 'T.%s_D.%s_V.%d_W.%d_E.%d' % (
 		params['T'], params['D'], vocab_size, window_size, args.num_epochs
