@@ -15,7 +15,8 @@ parser.add_argument("-w", "--window_size", type=int, default=20)
 parser.add_argument("-s", "--step_size", type=int, default=1)
 args = parser.parse_args()
 
-DATA_DIR = args.data_dir
+# DATA_DIR = args.data_dir
+DATA_DIR = args.data_dir if args.data_dir[-1]!="/" else args.data_dir[:-1]
 TRAIN_PATH = os.path.join(DATA_DIR, 'train.txt')
 VOCAB_PATH = os.path.join(DATA_DIR, 'vocab.pkl')
 CONFIG_PATH = os.path.join(DATA_DIR, 'config.pkl')
