@@ -3,3 +3,4 @@ results/
 data-1604/
 corpus.txt
 .DS_Store
+*.pyc
