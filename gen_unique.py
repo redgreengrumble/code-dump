@@ -31,7 +31,7 @@ def zipfian_distribution(word_count):
 	def fmt(w):
 		return '\"' + str(w) + '\"'
 	cardinality = 100000000
-	primer={'token': 'primer', 'frequency': cardinality, 'rank': 0}
+	primer={'token': '\"primer', 'frequency': cardinality, 'rank': 0}
 	dist=[primer]
 
 	for w in word_count:
@@ -49,8 +49,8 @@ def zipfian_distribution(word_count):
 		writer.writeheader()
 		writer.writerows(dist)
 
-	cmd1 = "sed -i .del1 's/token,frequency,rank/\"token\",\"frequency\",\"rank\"/g' zipfian_distribution.csv"
-	cmd2 = "sed -i .del2 -E 's/\"+/\"/g' zipfian_distribution.csv"
+	cmd1 = "sed -i 's/token,frequency,rank/\"token\",\"frequency\",\"rank\"/g' zipfian_distribution.csv"
+	cmd2 = "sed -i -e 's/\"+/\"/g' zipfian_distribution.csv"
 	clean_temp_files = "rm *.del*"
 	import subprocess
 	ok = subprocess.check_output(cmd1, shell=True)
