@@ -42,7 +42,7 @@ def zipfian_distribution(word_count):
 	for idx, entry in enumerate(dist):
 		entry['rank'] = fmt(idx)
 		entry['frequency'] = fmt(entry['frequency'])
-
+	import csv
 	fields=['token', 'frequency', 'rank']
 	with open('zipfian_distribution.csv', 'w') as outfile:
 		writer = csv.DictWriter(outfile, fieldnames=fields)
