@@ -9,7 +9,8 @@ vocab = {}
 unique_set = set()
 
 def gen_unique_queries():
-	import datetime
+	global vocab
+	global unique_set
 	outfile = "unique.%s.%s"%(QUERY_LOG_PATH, datetime.datetime.now().strftime("%d%H%M"))
 	with open(QUERY_LOG_PATH) as f:
 		for line in f:
