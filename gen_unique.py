@@ -6,11 +6,10 @@ import sys
 
 QUERY_LOG_PATH = sys.argv[1]
 vocab = {}
-unique_set = set()
 
 def gen_unique_queries():
 	global vocab
-	global unique_set
+	unique_set = set()
 	outfile = "unique.%s.%s"%(QUERY_LOG_PATH, datetime.datetime.now().strftime("%d%H%M"))
 	with open(QUERY_LOG_PATH) as f:
 		for line in f:
