@@ -4,3 +4,4 @@ data-1604/
 corpus.txt
 .DS_Store
 *.pyc
+dataset.val.txt*
