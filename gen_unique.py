@@ -1,4 +1,8 @@
-import datetime, gc, sys
+#!/usr/bin/env python
+
+import datetime
+import gc 
+import sys
 
 QUERY_LOG_PATH = sys.argv[1]
 vocab = {}
