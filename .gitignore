@@ -5,3 +5,5 @@ corpus.txt
 .DS_Store
 dataset.txt.padded.tar.gz
 */*.pyc
+*.pyc
+dataset.val.txt*

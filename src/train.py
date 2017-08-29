@@ -47,20 +47,18 @@ def load_and_train():
 	inputs = None
 	outputs = None
 	gc.collect()
-
-	model = build_model(window_size, vocab_size)
-	# train the model
-	model.fit(x, y, batch_size=1024, epochs=args.num_epochs, verbose=1)
-
+	
 	params = dict(map(lambda x: tuple(x.split(".")[:2]), DATA_DIR.split("/")[-1].split("_")))
+	stamp = 'T.%s_D.%s_V.%d_W.%d_E.%d' % (params['T'], params['D'], vocab_size, window_size, args.num_epochs)
+	# WEIGHTS_PATH = 'results/weights/%s.hdf5' % stamp
 
-	stamp = 'T.%s_D.%s_V.%d_W.%d_E.%d' % (
-		params['T'], params['D'], vocab_size, window_size, args.num_epochs
-		)
-
-	WEIGHTS_PATH = 'results/weights/%s.hdf5' % stamp
-
-	model.save_weights(WEIGHTS_PATH)
+	# build and train the model
+	model = build_model(window_size, vocab_size)
+	# model.fit(x, y, batch_size=1024, epochs=args.num_epochs, verbose=1)
+	for current_epoch in range(args.num_epochs):
+		model.fit(x, y, batch_size=1024, epochs=1, verbose=1)
+		WEIGHTS_PATH = 'results/weights/%s.hdf5' % (stamp+'_CE.'+str(current_epoch))
+		model.save_weights(WEIGHTS_PATH)
 
 
 if __name__ == '__main__':
