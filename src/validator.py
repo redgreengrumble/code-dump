@@ -12,32 +12,33 @@ queryfile="../sync_mtext_gen/dataset.unique.val.txt"
 
 delimiter = re.compile('(<SOQ> | <EOQ>)')
 valarg_regex = re.compile('(<VAL>|<ARG>)')
-# arg_regex = re.compile('<ARG>')
 unk_regex = re.compile('<UNK>')
+topunk_regex = re.compile('TOP <UNK>')
 wild_regex = re.compile('<W>')
 
+validset = open(args.queryfile+".valid", "w")
+invalidset = open(args.queryfile+".invalid", "w")
 
 with open(args.queryfile) as f:
-    validset=[]
-    invalidset=[]
+    valid=0
+    invalid=0
     parser = sqlparser.Parser()
     for line in f:
     	linein = line
     	line = re.sub(valarg_regex, "10", line)
     	line = re.sub(unk_regex, "x", line)
+    	line = re.sub(topunk_regex, "TOP 10", line)
     	line = re.sub(delimiter, "", line)
     	line = re.sub(wild_regex, "*", line)
     	if parser.check_syntax(line) == 0:
-    		validset.append(linein)
+    		valid += 1
+    		validset.write(linein)
     	else:
-    		invalidset.append(linein)
+    		invalid += 1
+    		invalidset.write(linein)
 
-print "Valid:%d" % len(validset)
-print "Invalid:%d" % len(invalidset)
+invalidset.close()
+validset.close()
 
-
-with open(args.queryfile+".valid", "w") as v:
-	v.writelines(validset)
-with open(args.queryfile+".invalid", "w") as v:
-	v.writelines(invalidset)
-
+print "Valid:%d" % valid
+print "Invalid:%d" % invalid
