@@ -7,3 +7,4 @@ dataset.txt.padded.tar.gz
 */*.pyc
 *.pyc
 dataset.val.txt*
+./dataset.val.txt
