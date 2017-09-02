@@ -10,9 +10,9 @@ import sqlparser
 
 q="../sync_mtext_gen/dataset.unique.val.txt"
 
-val_regex = r'<VAL>'
-arg_regex = r'<ARG>'
-unk_regex = r'<UNK>'
+val_regex = re.compile('<VAL>')
+arg_regex = re.compile('<ARG>')
+unk_regex = re.compile('<UNK>')
 
 
 with open(args.queryfile) as f:
@@ -20,9 +20,9 @@ with open(args.queryfile) as f:
     invalidset=[]
     parser = sqlparser.Parser()
     for line in f:
-		line = val_regex.sub("10", line)
-		line = arg_regex.sub("10", line)
-		line = unk_regex.sub("x", line)
+		line = re.sub(val_regex, "10", line)
+		line = re.sub(arg_regex, "10", line)
+		line = re.sub(unk_regex, "x", line)
 
 		if parser.check_syntax(line) == 0:
 			validset.append(line)
