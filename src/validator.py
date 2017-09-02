@@ -25,13 +25,12 @@ with open(args.queryfile) as f:
     	linein = line
     	line = re.sub(valarg_regex, "10", line)
     	line = re.sub(unk_regex, "x", line)
-		line = re.sub(delimiter, "", line)
-		line = re.sub(wild_regex, "*", line)
-
-		if parser.check_syntax(line) == 0:
-			validset.append(linein)
-		else:
-			invalidset.append(linein)
+    	line = re.sub(delimiter, "", line)
+    	line = re.sub(wild_regex, "*", line)
+    	if parser.check_syntax(line) == 0:
+    		validset.append(linein)
+    	else:
+    		invalidset.append(linein)
 
 print "Valid:%d" % len(validset)
 print "Invalid:%d" % len(invalidset)
