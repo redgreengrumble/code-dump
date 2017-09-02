@@ -25,12 +25,26 @@ with open(args.queryfile) as f:
     parser = sqlparser.Parser()
     for line in f:
     	linein = line
-    	line = re.sub(valarg_regex, "10", line)
-    	line = re.sub(unk_regex, "x", line)
+    	line = re.sub(wild_regex, "*", line)
     	line = re.sub(topunk_regex, "TOP 10", line)
     	line = re.sub(delimiter, "", line)
-    	line = re.sub(wild_regex, "*", line)
-    	if parser.check_syntax(line) == 0:
+    	lineVI = re.sub(valarg_regex, "10", line)
+    	lineVX = re.sub(valarg_regex, "x", line)
+    	lineUI = re.sub(unk_regex, "10", line)
+    	lineUX = re.sub(unk_regex, "x", line)
+    	lineUIVI = re.sub(unk_regex, "10", lineVI)
+    	lineUIVX = re.sub(unk_regex, "10", lineVX)
+    	lineUXVI = re.sub(unk_regex, "x", lineVI)
+    	lineUXVX = re.sub(unk_regex, "x", lineVX)
+    	if parser.check_syntax(line) == 0 || 
+    		parser.check_syntax(lineVI) == 0 ||
+    		parser.check_syntax(lineVX) == 0 ||
+    		parser.check_syntax(lineUI) == 0 ||
+    		parser.check_syntax(lineUX) == 0 ||
+    		parser.check_syntax(lineUIVI) == 0 ||
+    		parser.check_syntax(lineUIVX) == 0 ||
+    		parser.check_syntax(lineUXVI) == 0 ||
+    		parser.check_syntax(lineUXVX) == 0:
     		valid += 1
     		validset.write(linein)
     	else:
