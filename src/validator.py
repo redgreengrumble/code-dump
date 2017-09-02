@@ -29,8 +29,8 @@ with open(args.queryfile) as f:
 		else:
 			invalidset.append(line)
 
-print "Valid:" % len(validset)
-print "Invalid:" % len(invalidset)
+print "Valid:%d" % len(validset)
+print "Invalid:%d" % len(invalidset)
 
 
 with open(args.queryfile+".valid", "w") as v:
