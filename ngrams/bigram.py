@@ -2,7 +2,8 @@
 # 
 
 import sys
-import cPickle
+# import cPickle
+import _pickle as cPickle
 from scipy import sparse
 import collections
 import numpy as np
@@ -25,7 +26,8 @@ CORPUS = None
 def gen_bigram_matrix(CORPUS, compression_algo):
 	output = subprocess.check_output("wc -l %s" % CORPUS, shell=True)
 	numlines = output.split()[0]
-
+	import time
+	start_time = time.time()
 	word_counter = collections.Counter([])
 	with open(CORPUS) as f:
 		chkpt = 0
@@ -60,8 +62,9 @@ def gen_bigram_matrix(CORPUS, compression_algo):
 				stdout.write("\r%d/%s lines processed" % (c, numlines))
 				stdout.flush()
 	stdout.write("\n")
-	# save_bigram(H, words, compression=compression_algo)
-	save_bigram_all(H, words)
+	print("Runtime: %ds" % int(time.time()-start_time))
+	save_bigram(H, words, compression=compression_algo)
+	# save_bigram_all(H, words)
 
 def save_bigram(H, words, compression=None):
 	# Compression options: gzip, bzip2, lzma
@@ -88,9 +91,9 @@ def save_bigram(H, words, compression=None):
 		vocab_file = open(VOCAB_OUTFILE, mode)
 
 	cPickle.dump(H, matrix_file)
-	print "Sparse matrix bigram saved to %s.%s" % (MTX_OUTFILE, compression)
+	print("Sparse matrix bigram saved to %s.%s" % (MTX_OUTFILE, compression))
 	cPickle.dump(words, vocab_file)
-	print "Vocab saved to %s.%s" % (VOCAB_OUTFILE, compression)
+	print("Vocab saved to %s.%s" % (VOCAB_OUTFILE, compression))
 
 	matrix_file.close()
 	vocab_file.close()
@@ -141,20 +144,20 @@ def get_bestn(word, n, compression=None):
 	word_to_idx = dict(zip(id_to_word, range(len(id_to_word))))
 	r = []
 	row = word_to_idx[word]
-	print row
+	# print(row)
 	dist = H.getrow(idx).todense()[0]
 	# print H.getrow(idx)
 	_, cols = H.getrow(idx).nonzero()
 	cols = list(cols)
-	print cols
-	# print H.getrow(idx).todense()
-	# print dist
-	# print dist[0]
+	# print(cols)
+	# print(H.getrow(idx).todense())
+	# print(dist)
+	# print(dist[0])
 
 	while len(r) < min(n, len(cols)):
 		top_idx = np.argmax(dist)
-		print "top_idx:", top_idx
-		print "len(dist):", len(dist)
+		print("top_idx:", top_idx)
+		print("len(dist):", len(dist))
 		r.append(id_to_word[top_idx])
 		# dist[top_idx] *= -1
 		dist[top_idx] = 0
