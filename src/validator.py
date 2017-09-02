@@ -23,7 +23,7 @@ with open(args.queryfile) as f:
     parser = sqlparser.Parser()
     for line in f:
     	linein = line
-		line = re.sub(valarg_regex, "10", line)
+    	line = re.sub(valarg_regex, "10", line)
 		# line = re.sub(arg_regex, "10", line)
 		line = re.sub(unk_regex, "x", line)
 		line = re.sub(delimiter, "", line)
