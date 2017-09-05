@@ -9,6 +9,14 @@ import sys, os, subprocess
 from argparse import ArgumentParser
 from utils import *
 
+from __future__ import print_function
+import os, gc, collections
+from argparse import ArgumentParser
+import numpy as np
+from six.moves import cPickle
+import json
+
+
 parser = ArgumentParser()
 parser.add_argument("-m", "--model", default="results/weights/T.1604_D.5_V.3298_W.4_E.100.hdf5")
 parser.add_argument("-x", "--prefix")
