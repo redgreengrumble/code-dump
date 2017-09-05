@@ -34,7 +34,7 @@ VOCAB_PATH = os.path.join(DATA_DIR, 'vocab.pkl')
 CONFIG_PATH = os.path.join(DATA_DIR, 'config.pkl')
 
 END_TOKEN = '<EOQ>'
-VOCAB_PATH=os.path.join(DATA_DIR,''
+
 def load_encoding():
     # global VOCAB_SIZE
     # global ENCODING
