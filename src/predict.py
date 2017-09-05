@@ -26,8 +26,8 @@ window_size = int(params['W'])
 vocab_size = int(params['V'])
 
 # DATA_DIR = os.path.join(os.getcwd(), "data/T.%s_D.%s_E.%s" % (ts, dilute, epochs))
-ENCODING_MAP_PATH = os.path.join(DATA_DIR, 'encoding_map.json')
-DECODING_MAP_PATH = os.path.join(DATA_DIR, 'decoding_map.json')
+# ENCODING_MAP_PATH = os.path.join(DATA_DIR, 'encoding_map.json')
+# DECODING_MAP_PATH = os.path.join(DATA_DIR, 'decoding_map.json')
 
 DATA_DIR = os.path.join(os.getcwd(), "data/T.%s_D.%s" % (ts, dilute))
 # TRAIN_PATH = os.path.join(DATA_DIR, 'train.txt')
