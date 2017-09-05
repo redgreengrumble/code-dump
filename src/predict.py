@@ -78,8 +78,8 @@ def predict_next_tokens(model, input_tokens, num_to_predict):
         x_test = np.zeros((1, window_size, vocab_size))
         for t, token in enumerate(input_tokens):
             x_test[0, t, word_to_id[token]] = 1.
-            print("word_to_id[%s]=%d" % (token, word_to_id[token]))
-            print("id_to_word[%d]=%s" % (word_to_id[token], id_to_word[word_to_id[token]]))
+            # print("word_to_id[%s]=%d" % (token, word_to_id[token]))
+            # print("id_to_word[%d]=%s" % (word_to_id[token], id_to_word[word_to_id[token]]))
         # make this round's prediction
         predictions = model.predict(x_test, verbose=0)[0]
         # print("np.shape(predictions):", np.shape(predictions)) = (3298,)
@@ -99,8 +99,8 @@ def predict_next_tokens(model, input_tokens, num_to_predict):
                 rs.append(rn)
             else:
                 dbg += " rn seen. %d |" % rn
-        print("top matches:", map(lambda x: (id_to_word[x], predictions[x]*-1), rs))
-        print("------------------------")
+        # print("top matches:", map(lambda x: (id_to_word[x], predictions[x]*-1), rs))
+        # print("------------------------")
 
         # translate numerical prediction back to token
         d = id_to_word[r]
