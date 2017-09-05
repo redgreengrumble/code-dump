@@ -29,8 +29,12 @@ DATA_DIR = os.path.join(os.getcwd(), "data/T.%s_D.%s_E.%s" % (ts, dilute, epochs
 ENCODING_MAP_PATH = os.path.join(DATA_DIR, 'encoding_map.json')
 DECODING_MAP_PATH = os.path.join(DATA_DIR, 'decoding_map.json')
 
-END_TOKEN = '<EOQ>'
+# TRAIN_PATH = os.path.join(DATA_DIR, 'train.txt')
+VOCAB_PATH = os.path.join(DATA_DIR, 'vocab.pkl')
+CONFIG_PATH = os.path.join(DATA_DIR, 'config.pkl')
 
+END_TOKEN = '<EOQ>'
+VOCAB_PATH=os.path.join(DATA_DIR,''
 def load_encoding():
     # global VOCAB_SIZE
     # global ENCODING
