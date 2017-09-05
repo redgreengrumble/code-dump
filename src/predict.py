@@ -91,11 +91,11 @@ def predict_next_tokens(model, input_tokens, num_to_predict):
                 rs.append(rn)
             else:
                 dbg += " rn seen. %d |" % rn
-        print("top matches:", map(lambda x: (id_to_word[str(x)], predictions[x]*-1), rs))
+        print("top matches:", map(lambda x: (id_to_word[x], predictions[x]*-1), rs))
         print("------------------------")
 
         # translate numerical prediction back to token
-        d = id_to_word[str(r)]
+        d = id_to_word[r]
         # update predicted_tokens
         predicted_tokens.append(d)
 
