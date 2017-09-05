@@ -53,7 +53,7 @@ def load_encoding():
         words = cPickle.load(f)
     VOCAB_SIZE = len(words)
     encoding = dict(zip(words, range(VOCAB_SIZE)))
-    UNK_ENCODING = ENCODING["<UNK>"]
+    # UNK_ENCODING = ENCODING["<UNK>"]
     return encoding, words
 
 
