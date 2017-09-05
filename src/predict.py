@@ -33,6 +33,7 @@ epochs = params['E']
 window_size = int(params['W'])
 vocab_size = int(params['V'])
 
+
 # DATA_DIR = os.path.join(os.getcwd(), "data/T.%s_D.%s_E.%s" % (ts, dilute, epochs))
 # ENCODING_MAP_PATH = os.path.join(DATA_DIR, 'encoding_map.json')
 # DECODING_MAP_PATH = os.path.join(DATA_DIR, 'decoding_map.json')
@@ -42,7 +43,9 @@ DATA_DIR = os.path.join(os.getcwd(), "data/T.%s_D.%s" % (ts, dilute))
 VOCAB_PATH = os.path.join(DATA_DIR, 'vocab.pkl')
 CONFIG_PATH = os.path.join(DATA_DIR, 'config.pkl')
 
+SEQ_LENGTH = 20
 END_TOKEN = '<EOQ>'
+PAD_TOKEN = "?"
 
 def load_encoding():
     # global VOCAB_SIZE
@@ -66,6 +69,10 @@ def predict_next_tokens(model, input_tokens, num_to_predict):
     # id_to_word = 
     predicted_token_ids = []
     predicted_tokens = []
+
+    # Append pad tokens
+    input_tokens = ([PAD_TOKEN]*(SEQ_LENGTH - len(input_tokens))) + input_tokens
+
     for i in range(num_to_predict):
         # convert this round's predicted tokens to numerical input    
         x_test = np.zeros((1, window_size, vocab_size))
