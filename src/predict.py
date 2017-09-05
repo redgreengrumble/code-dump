@@ -31,11 +31,26 @@ DECODING_MAP_PATH = os.path.join(DATA_DIR, 'decoding_map.json')
 
 END_TOKEN = '<EOQ>'
 
+def load_encoding():
+    # global VOCAB_SIZE
+    # global ENCODING
+    # global UNK_ENCODING
+
+    with open(VOCAB_PATH, 'rb') as f:
+        words = cPickle.load(f)
+    VOCAB_SIZE = len(words)
+    encoding = dict(zip(words, range(VOCAB_SIZE)))
+    UNK_ENCODING = ENCODING["<UNK>"]
+    return encoding, words
+
+
 # function that uses trained model to predict a desired number of future tokens
 def predict_next_tokens(model, input_tokens, num_to_predict):     
     # create output
-    word_to_id = load_encoding(ENCODING_MAP_PATH)
-    id_to_word = load_decoding(DECODING_MAP_PATH)
+    # word_to_id = load_encoding(ENCODING_MAP_PATH)
+    # id_to_word = load_decoding(DECODING_MAP_PATH)
+    word_to_id, id_to_word = load_encoding()
+    # id_to_word = 
     predicted_token_ids = []
     predicted_tokens = []
     for i in range(num_to_predict):
