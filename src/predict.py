@@ -2,14 +2,14 @@
 # Usage:
 # ./predict.py -m results/weights/T.1604_D.5_V.3298_W.4.hdf5 -x "<SOQ> SELECT <W> FROM" -n 2
 # ./src/predict.py -m results/weights/T.1604_D.50_V.7477_W.4_E.50.hdf5 -x "<SOQ> SELECT <W> FROM" -n 5
-
+from __future__ import print_function
 import numpy as np
 import random, collections, json
 import sys, os, subprocess
 from argparse import ArgumentParser
 from utils import *
 
-from __future__ import print_function
+
 import os, gc, collections
 from argparse import ArgumentParser
 import numpy as np
