@@ -29,3 +29,9 @@ def load_encoding(path):
 def load_decoding(path):
 	with open(path) as j:
   		return json.load(j)
+
+
+def load_pentagram(PENTAGRAMDICT_OUTFILE):
+	import cPickle
+	with open(PENTAGRAMDICT_OUTFILE) as f:
+		return cPickle.load(f)

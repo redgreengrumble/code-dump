@@ -45,18 +45,22 @@ CONFIG_PATH = os.path.join(DATA_DIR, 'config.pkl')
 
 SEQ_LENGTH = 20
 END_TOKEN = '<EOQ>'
+UNK_TOKEN = '<EOQ>'
 PAD_TOKEN = "?"
 
-def load_encoding():
-    # global VOCAB_SIZE
-    # global ENCODING
-    # global UNK_ENCODING
+OMIT_TOKENS = ["<EOQ>", "<SOQ>"]
+FORMAT_TOKENS = ["<W>"]
+REPLACE_TOKENS = ["<VAL>", "<ARG>", "<UNK>"]
 
+
+PENTAGRAM_FILE = os.path.join(DATA_DIR, 'pentagram.pkl')
+PENTAGRAM = load_pentagram()
+
+def load_encoding():
     with open(VOCAB_PATH, 'rb') as f:
         words = cPickle.load(f)
     VOCAB_SIZE = len(words)
     encoding = dict(zip(words, range(VOCAB_SIZE)))
-    # UNK_ENCODING = ENCODING["<UNK>"]
     return encoding, words
 
 
@@ -70,6 +74,8 @@ def predict_next_tokens(model, input_tokens, num_to_predict):
     predicted_token_ids = []
     predicted_tokens = []
 
+
+
     # Append pad tokens
     input_tokens = ([PAD_TOKEN]*(SEQ_LENGTH - len(input_tokens))) + input_tokens
 
@@ -77,12 +83,16 @@ def predict_next_tokens(model, input_tokens, num_to_predict):
         # convert this round's predicted tokens to numerical input    
         x_test = np.zeros((1, window_size, vocab_size))
         for t, token in enumerate(input_tokens):
+            if token not in word_to_id:
+                token = UNK_TOKEN
             x_test[0, t, word_to_id[token]] = 1.
             # print("word_to_id[%s]=%d" % (token, word_to_id[token]))
             # print("id_to_word[%d]=%s" % (word_to_id[token], id_to_word[word_to_id[token]]))
         # make this round's prediction
         predictions = model.predict(x_test, verbose=0)[0]
         # print("np.shape(predictions):", np.shape(predictions)) = (3298,)
+
+
 
         # predict class of each test input
         r = np.argmax(predictions)
