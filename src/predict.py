@@ -55,7 +55,7 @@ REPLACE_TOKENS = ["<VAL>", "<ARG>", "<UNK>"]
 
 
 PENTAGRAM_FILE = 'ngrams/results/pentagram_dict.pkl'
-PENTAGRAM = load_pentagram(PENTAGRAM_FILE)
+pentagram = load_pentagram(PENTAGRAM_FILE)
 
 
 def load_encoding():
@@ -67,7 +67,7 @@ def load_encoding():
 
 
 def ngram_predict_next(context, n):
-    return sorted(list(PENTAGRAM[context].iteritems()), key=lambda x: (-x[1], x[0]))[:n]
+    return sorted(list(pentagram[context].iteritems()), key=lambda x: (-x[1], x[0]))[:n]
 
 # function that uses trained model to predict a desired number of future tokens
 def predict_next_tokens(model, input_tokens, num_to_predict):     
