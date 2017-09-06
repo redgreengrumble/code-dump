@@ -117,8 +117,8 @@ def predict_next_tokens(model, input_tokens, num_to_predict, ngram_assist=False)
                 print("context: "+str(context)+" not in pentagram")
 
         if ngram_assist and len(substitutions) > 0:
-            print("replacing special token: "+id_to_word[r]+" with "+word_to_id[substitutions[0]])
-            r = word_to_id[substitutions[0]] if substitutions[0] in word_to_id else r
+            print("replacing special token: "+id_to_word[r]+" with "+word_to_id[substitutions[0][0]])
+            r = word_to_id[substitutions[0][0]] if substitutions[0][0] in word_to_id else r
 
 
         # peek runner ups
