@@ -31,7 +31,10 @@ def load_decoding(path):
   		return json.load(j)
 
 
-def load_pentagram(PENTAGRAMDICT_OUTFILE):
+def load_ngram(ngramfile):
 	import cPickle
-	with open(PENTAGRAMDICT_OUTFILE) as f:
+	with open(ngramfile) as f:
 		return cPickle.load(f)
+
+
+

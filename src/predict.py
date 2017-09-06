@@ -58,8 +58,8 @@ placeholders = ["10", "10", "x"]
 
 PENTAGRAM_FILE = 'ngrams/results/pentagram_dict.pkl'
 TRIGRAM_FILE = 'ngrams/results/trigram_dict.pkl'
-pentagram = load_pentagram(PENTAGRAM_FILE)
-trigram = load_pentagram(TRIGRAM_FILE)
+pentagram = load_ngram(PENTAGRAM_FILE)
+trigram = load_ngram(TRIGRAM_FILE)
 
 
 def load_encoding():
