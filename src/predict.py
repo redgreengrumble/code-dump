@@ -105,6 +105,8 @@ def predict_next_tokens(model, input_tokens, num_to_predict):
         substitutions = []
         context=tuple(input_tokens[:4])
         print("context: "+str(context))
+        print("ngram_predict_next(context, 5): "+str(ngram_predict_next(context, 5)))
+        
         if r in replace_token_ids: # Check if "<VAL>", "<ARG>", "<UNK>"
             if context in pentagram:
                 # do the thing
