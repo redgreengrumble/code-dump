@@ -108,6 +108,9 @@ def predict_next_tokens(model, input_tokens, num_to_predict):
             if context in pentagram:
                 # do the thing
                 substitutions = filter(lambda s: s not in REPLACE_TOKENS, ngram_predict_next(context, 5))
+            else:
+                print("context "+str(context)+" not in pentagram")
+        print("substitutions:"+str(substitutions))
         if len(substitutions) > 0:
             r = word_to_id[substitutions[0]] if substitutions[0] in word_to_id else r
 
