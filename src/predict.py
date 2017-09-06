@@ -109,13 +109,14 @@ def predict_next_tokens(model, input_tokens, num_to_predict, ngram_assist=False)
         if r in replace_token_ids: # Check if "<VAL>", "<ARG>", "<UNK>"
             # print("special token: "+id_to_word[r])
             if context in pentagram:
-                # print("ngram_predict_next(context, 5): "+str(ngram_predict_next(context, 5)))
                 # do the thing
                 substitutions = filter(lambda s: s not in REPLACE_TOKENS, ngram_predict_next(context, 5))
             else:
                 print("context: "+str(context)+" not in pentagram")
 
         if ngram_assist and len(substitutions) > 0:
+            print("5-GRAM(%s): %s"%(str(context), pentagram[context] if context in pentagram else "NO ENTRY" ))
+            print("ngram_predict_next(%s): %s"%(str(context), str(ngram_predict_next(context, 5))))
             print("substitutions: "+str(substitutions))
             print("replacing special token: "+id_to_word[r]+" with "+substitutions[0][0])
             r = word_to_id[substitutions[0][0]] if substitutions[0][0] in word_to_id else r
