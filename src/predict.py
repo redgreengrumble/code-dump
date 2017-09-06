@@ -54,7 +54,7 @@ REPLACE_TOKENS = ["<VAL>", "<ARG>", "<UNK>"]
 
 
 
-PENTAGRAM_FILE = os.path.join(DATA_DIR, 'ngrams/results/pentagram.pkl')
+PENTAGRAM_FILE = os.path.join(DATA_DIR, 'ngrams/results/pentagram_dict.pkl')
 PENTAGRAM = load_pentagram(PENTAGRAM_FILE)
 
 
