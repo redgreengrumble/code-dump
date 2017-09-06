@@ -61,12 +61,12 @@ def gen_trigram(train_set):
 			tokens = line.split()
 			# pentuple = list(zip(tokens, tokens[1:], tokens[2:], tokens[3:], tokens[4:]))
 			trituple = list(zip(tokens, tokens[1:], tokens[2:]))
-			for t1, t2, t3 in pentuple:
+			for t1, t2, t3 in trituple:
 				# pentkey = quad_word_encoding[(t1,t2,t3,t4)]
 				# pentval = single_word_encoding[t5]
 				trikey = (t1,t2)
-				trival = t5
-				if pentkey not in trigram:
+				trival = t3
+				if trikey not in trigram:
 					trigram[trikey] = {}
 				if trival not in trigram[trikey]:
 					trigram[trikey][trival] = 0
@@ -96,7 +96,7 @@ def save_PENTAGRAM(PENTAGRAM, single_words=None, quad_words=None):
 	if not os.path.exists(RESULTS_DIR):
 		os.mkdir(RESULTS_DIR)
 
-	with open(PENTAGRAMDICT_OUTFILE, "w") as d:
+	with open(TRIGRAMDICT_OUTFILE, "w") as d:
 		cPickle.dump(PENTAGRAM, d)
 		
 	# with gzip.GzipFile(PENTAGRAMDICT_OUTFILE, "w") as d:
