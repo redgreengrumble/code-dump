@@ -55,8 +55,8 @@ def gen_pentagram(train_set):
 
 	PENTAGRAM = dict()
 	with open(train_set) as f:
-		c = chkpt
-		c_prev = chkpt
+		c = 0
+		c_prev = 0
 		for line in f:
 			tokens = line.split()
 			pentuple = list(zip(tokens, tokens[1:], tokens[2:], tokens[3:], tokens[4:]))
