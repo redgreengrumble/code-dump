@@ -161,10 +161,10 @@ def load_model(model_path):
 def main():
     # print("args.prefix:", args.prefix)
     model = load_model(model_path)
-    predicted_tokens = predict_next_tokens(model, input_tokens=args.prefix.split(" "), num_to_predict=args.num_predicted)
-    print("No ngram: "+args.prefix+" "+" ".join(predicted_tokens))
-    predicted_tokens = predict_next_tokens(model, input_tokens=args.prefix.split(" "), num_to_predict=args.num_predicted, ngram_assist=True)
-    print("With ngram: "+args.prefix+" "+" ".join(predicted_tokens))
+    predicted_tokens = predict_next_tokens(model, input_tokens=args.prefix.split(), num_to_predict=args.num_predicted)
+    print("no ngram: "+args.prefix+" "+" ".join(predicted_tokens))
+    predicted_tokens = predict_next_tokens(model, input_tokens=args.prefix.split(), num_to_predict=args.num_predicted, ngram_assist=True)
+    print("W/ ngram: "+args.prefix+" "+" ".join(predicted_tokens))
     model = None
     
     
