@@ -111,8 +111,8 @@ def predict_next_tokens(model, input_tokens, num_to_predict, ngram_assist=False)
             if context in pentagram:
                 # do the thing
                 substitutions = filter(lambda s: s[0] not in REPLACE_TOKENS, ngram_predict_next(context, 5))
-            else:
-                print("context: "+str(context)+" not in pentagram")
+            # else:
+                # print("context: "+str(context)+" not in pentagram")
 
         if ngram_assist and len(substitutions) > 0:
             print("----------------------")
@@ -167,6 +167,8 @@ def main():
     print("no ngram: "+args.prefix+" "+" ".join(predicted_tokens))
     predicted_tokens = predict_next_tokens(model, input_tokens=args.prefix.split(), num_to_predict=args.num_predicted, ngram_assist=True)
     print("W/ ngram: "+args.prefix+" "+" ".join(predicted_tokens))
+    print("######################################################")
+    print("######################################################")
     model = None
     
     
