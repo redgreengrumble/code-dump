@@ -52,8 +52,9 @@ PAD_TOKEN = "?"
 OMIT_TOKENS = ["<EOQ>", "<SOQ>"]
 FORMAT_TOKENS = ["<W>"]
 REPLACE_TOKENS = ["<VAL>", "<ARG>", "<UNK>"]
+placeholders = ["10", "10", "x"]
 
-
+# token_placeholders = dict(zip(REPLACE_TOKENS, placeholders))
 
 PENTAGRAM_FILE = 'ngrams/results/pentagram_dict.pkl'
 pentagram = load_pentagram(PENTAGRAM_FILE)
@@ -115,14 +116,17 @@ def predict_next_tokens(model, input_tokens, num_to_predict, ngram_assist=False)
             # else:
                 # print("context: "+str(context)+" not in pentagram")
 
-        if ngram_assist and len(substitutions) > 0:
+        if ngram_assist:
             print("----------------------")
-            # print("5-GRAM(%s): %s"%(str(context), pentagram[context] if context in pentagram else "NO ENTRY" ))
-            print("ngram_predict_next(%s): %s"%(str(context), str(ngram_predict_next(context, 5))))
-            print("substitutions: "+str(substitutions))
-            print("replacing special token: "+id_to_word[r]+" with "+substitutions[0][0])
-            r = word_to_id[substitutions[0][0]] if substitutions[0][0] in word_to_id else r
-
+            print("Possible substitutions: "+str(substitutions))
+            vocabsubs = filter(lambda s: s in word_to_id, map(lambda w: w[0], substitutions))
+            print("substitutions in vocab: "+str(vocabsubs))
+            if len(vocabsubs) > 0:
+                # print("5-GRAM(%s): %s"%(str(context), pentagram[context] if context in pentagram else "NO ENTRY" ))
+                # print("ngram_predict_next(%s): %s"%(str(context), str(ngram_predict_next(context, 5))))
+                print("replacing special token: "+id_to_word[r]+" with "+vocabsubs[0])
+                r = word_to_id[vocabsubs[0]]
+                print("new r:"+id_to_word[r])
 
         # peek runner ups
         rs=[r]
@@ -166,11 +170,12 @@ def main():
     model = load_model(model_path)
     predicted_tokens = predict_next_tokens(model, input_tokens=args.prefix.split(), num_to_predict=args.num_predicted)
     print("no ngram: "+args.prefix+" "+" ".join(predicted_tokens))
+    print("-----------------------")
     predicted_tokens = predict_next_tokens(model, input_tokens=args.prefix.split(), num_to_predict=args.num_predicted, ngram_assist=True)
     print("W/ ngram: "+args.prefix+" "+" ".join(predicted_tokens))
     print("######################################################")
     print("\n")
-    print("Epoch %d"%current_epoch)
+    print("Epoch %s"%current_epoch)
     print("######################################################")
     model = None
     
