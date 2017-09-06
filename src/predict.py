@@ -70,7 +70,7 @@ def ngram_predict_next(context, n):
     return sorted(list(pentagram[context].iteritems()), key=lambda x: (-x[1], x[0]))[:n]
 
 # function that uses trained model to predict a desired number of future tokens
-def predict_next_tokens(model, input_tokens, num_to_predict):     
+def predict_next_tokens(model, input_tokens, num_to_predict, ngram_assist=False):     
     # create output
     # word_to_id = load_encoding(ENCODING_MAP_PATH)
     # id_to_word = load_decoding(DECODING_MAP_PATH)
@@ -104,19 +104,20 @@ def predict_next_tokens(model, input_tokens, num_to_predict):
 
         substitutions = []
         context=tuple(input_tokens[:4])
-        print("context: "+str(context))
+        # print("context: "+str(context))
         
         if r in replace_token_ids: # Check if "<VAL>", "<ARG>", "<UNK>"
-            print("special token: "+id_to_word[r])
+            # print("special token: "+id_to_word[r])
             if context in pentagram:
-                print("ngram_predict_next(context, 5): "+str(ngram_predict_next(context, 5)))
+                # print("ngram_predict_next(context, 5): "+str(ngram_predict_next(context, 5)))
                 # do the thing
                 substitutions = filter(lambda s: s not in REPLACE_TOKENS, ngram_predict_next(context, 5))
-                print("substitutions: "+str(substitutions))
+                # print("substitutions: "+str(substitutions))
             else:
-                print("context not in pentagram")
-                
-        if len(substitutions) > 0:
+                print("context: "+str(context)+" not in pentagram")
+
+        if ngram_assist and len(substitutions) > 0:
+            print("replacing special token: "+id_to_word[r]+" with "+word_to_id[substitutions[0]])
             r = word_to_id[substitutions[0]] if substitutions[0] in word_to_id else r
 
 
@@ -161,7 +162,9 @@ def main():
     # print("args.prefix:", args.prefix)
     model = load_model(model_path)
     predicted_tokens = predict_next_tokens(model, input_tokens=args.prefix.split(" "), num_to_predict=args.num_predicted)
-    print(args.prefix+" "+" ".join(predicted_tokens))
+    print("No ngram: "+args.prefix+" "+" ".join(predicted_tokens))
+    predicted_tokens = predict_next_tokens(model, input_tokens=args.prefix.split(" "), num_to_predict=args.num_predicted, ngram_assist=True)
+    print("With ngram: "+args.prefix+" "+" ".join(predicted_tokens))
     model = None
     
     
