@@ -33,6 +33,7 @@ epochs = params['E']
 window_size = int(params['W'])
 vocab_size = int(params['V'])
 
+current_epoch = params['CE']
 
 # DATA_DIR = os.path.join(os.getcwd(), "data/T.%s_D.%s_E.%s" % (ts, dilute, epochs))
 # ENCODING_MAP_PATH = os.path.join(DATA_DIR, 'encoding_map.json')
@@ -116,7 +117,7 @@ def predict_next_tokens(model, input_tokens, num_to_predict, ngram_assist=False)
 
         if ngram_assist and len(substitutions) > 0:
             print("----------------------")
-            print("5-GRAM(%s): %s"%(str(context), pentagram[context] if context in pentagram else "NO ENTRY" ))
+            # print("5-GRAM(%s): %s"%(str(context), pentagram[context] if context in pentagram else "NO ENTRY" ))
             print("ngram_predict_next(%s): %s"%(str(context), str(ngram_predict_next(context, 5))))
             print("substitutions: "+str(substitutions))
             print("replacing special token: "+id_to_word[r]+" with "+substitutions[0][0])
@@ -168,6 +169,8 @@ def main():
     predicted_tokens = predict_next_tokens(model, input_tokens=args.prefix.split(), num_to_predict=args.num_predicted, ngram_assist=True)
     print("W/ ngram: "+args.prefix+" "+" ".join(predicted_tokens))
     print("######################################################")
+    print("\n")
+    print("Epoch %d"%current_epoch)
     print("######################################################")
     model = None
     
