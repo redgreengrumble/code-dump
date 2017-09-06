@@ -57,7 +57,9 @@ placeholders = ["10", "10", "x"]
 # token_placeholders = dict(zip(REPLACE_TOKENS, placeholders))
 
 PENTAGRAM_FILE = 'ngrams/results/pentagram_dict.pkl'
+TRIGRAM_FILE = 'ngrams/results/trigram_dict.pkl'
 pentagram = load_pentagram(PENTAGRAM_FILE)
+trigram = load_pentagram(TRIGRAM_FILE)
 
 
 def load_encoding():
@@ -68,8 +70,8 @@ def load_encoding():
     return encoding, words
 
 
-def ngram_predict_next(context, n):
-    return sorted(list(pentagram[context].iteritems()), key=lambda x: (-x[1], x[0]))[:n]
+def ngram_predict_next(contextmap):
+    return sorted(list(contextmap.iteritems()), key=lambda x: (-x[1], x[0]))
 
 # function that uses trained model to predict a desired number of future tokens
 def predict_next_tokens(model, input_tokens, num_to_predict, ngram_assist=False):     
@@ -105,25 +107,28 @@ def predict_next_tokens(model, input_tokens, num_to_predict, ngram_assist=False)
         # print("r:", r)
 
         substitutions = []
-        context=tuple(input_tokens[-4:])
+        vocabsubs = []
+
+        context4=tuple(input_tokens[-4:])
+        context2=tuple(input_tokens[-2:])
         # print("context: "+str(context))
         
         if r in replace_token_ids: # Check if "<VAL>", "<ARG>", "<UNK>"
             # print("special token: "+id_to_word[r])
-            if context in pentagram:
+            if context4 in pentagram:
                 # do the thing
-                substitutions = filter(lambda s: s[0] not in REPLACE_TOKENS, ngram_predict_next(context, 5))
+                substitutions = filter(lambda s: s[0] not in REPLACE_TOKENS, ngram_predict_next(pentagram[context4]))
+                # print("Possible substitutions: "+str(substitutions))
+                vocabsubs = filter(lambda s: s in word_to_id, map(lambda w: w[0], substitutions))
             # else:
                 # print("context: "+str(context)+" not in pentagram")
-
-        if ngram_assist:
-            print("----------------------")
-            print("Possible substitutions: "+str(substitutions))
-            vocabsubs = filter(lambda s: s in word_to_id, map(lambda w: w[0], substitutions))
-            print("substitutions in vocab: "+str(vocabsubs))
-            if len(vocabsubs) > 0:
+            if len(vocabsubs) == 0 and context2 in trigram:
+                substitutions = filter(lambda s: s[0] not in REPLACE_TOKENS, ngram_predict_next(trigram[context2]))
+                vocabsubs = filter(lambda s: s in word_to_id, map(lambda w: w[0], substitutions))
+                
+        if ngram_assist and len(vocabsubs) > 0:
+                print("----------------------")
                 # print("5-GRAM(%s): %s"%(str(context), pentagram[context] if context in pentagram else "NO ENTRY" ))
-                # print("ngram_predict_next(%s): %s"%(str(context), str(ngram_predict_next(context, 5))))
                 print("replacing special token: "+id_to_word[r]+" with "+vocabsubs[0])
                 r = word_to_id[vocabsubs[0]]
                 print("new r:"+id_to_word[r])
