@@ -53,8 +53,10 @@ FORMAT_TOKENS = ["<W>"]
 REPLACE_TOKENS = ["<VAL>", "<ARG>", "<UNK>"]
 
 
-PENTAGRAM_FILE = os.path.join(DATA_DIR, 'pentagram.pkl')
-PENTAGRAM = load_pentagram()
+
+PENTAGRAM_FILE = os.path.join(DATA_DIR, 'ngrams/results/pentagram.pkl')
+PENTAGRAM = load_pentagram(PENTAGRAM_FILE)
+
 
 def load_encoding():
     with open(VOCAB_PATH, 'rb') as f:
@@ -63,6 +65,9 @@ def load_encoding():
     encoding = dict(zip(words, range(VOCAB_SIZE)))
     return encoding, words
 
+
+def ngram_predict_next(context, n):
+    return sorted(list(PENTAGRAM[context].iteritems()), key=lambda x: (-x[1], x[0]))[:n]
 
 # function that uses trained model to predict a desired number of future tokens
 def predict_next_tokens(model, input_tokens, num_to_predict):     
@@ -74,6 +79,7 @@ def predict_next_tokens(model, input_tokens, num_to_predict):
     predicted_token_ids = []
     predicted_tokens = []
 
+    replace_token_ids = map(lambda x: word_to_id[x], REPLACE_TOKENS)
 
 
     # Append pad tokens
@@ -92,11 +98,19 @@ def predict_next_tokens(model, input_tokens, num_to_predict):
         predictions = model.predict(x_test, verbose=0)[0]
         # print("np.shape(predictions):", np.shape(predictions)) = (3298,)
 
-
-
         # predict class of each test input
         r = np.argmax(predictions)
         # print("r:", r)
+
+        substitutions = []
+        if r in replace_token_ids: # Check if "<VAL>", "<ARG>", "<UNK>"
+            context=tuple(input_tokens[:4])
+            if context in pentagram:
+                # do the thing
+                substitutions = filter(lambda s: s REPLACE_TOKENS, ngram_predict_next(context, 5))
+        if len(substitutions) > 0:
+            r = word_to_id[substitutions[0]] if substitutions[0] in word_to_id else r
+
 
         # peek runner ups
         rs=[r]
@@ -105,6 +119,7 @@ def predict_next_tokens(model, input_tokens, num_to_predict):
         while len(rs) < 5:
             predictions[rn] *= -1
             rn=np.argmax(predictions)
+
             if rn not in rs:
                 rs.append(rn)
             else:
